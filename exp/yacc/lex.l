@@ -12,29 +12,61 @@ STRCON     \"([^\"\\]|\\.)*\"
 %%
 "//".*$    { /* 忽略单行注释 */ }  /* 匹配从//开始到行尾的所有内容并忽略 */
 
-"main"              { printf("MAINTK main\n"); return MAIN; }
-"const"             { printf("CONSTTK const\n"); return CONST; }
-"int"               { printf("INTTK int\n"); return INT; } 
-"getint"            { printf("GETINTTK getint\n"); return GETINT; }
-"printf"            { printf("PRINTFTK printf\n"); return PRINTF; }
-"return"            { printf("RETURNTK return\n"); return RETURN; }
+"/*"    {
+    int c;
+    while ((c = input()) != 0) {
+        if (c == '*') {
+            if ((c = input()) == '/')
+                break;
+            unput(c);
+        }
+    }
+}
 
-"{"                 { printf("LBRACE %s\n", yytext); return yytext[0]; }
-"}"                 { printf("RBRACE %s\n", yytext); return yytext[0]; }
-"("                 { printf("LPARENT %s\n", yytext); return yytext[0]; }
-")"                 { printf("RPARENT %s\n", yytext); return yytext[0]; }
-";"                 { printf("SEMICN ;\n"); return yytext[0]; }
-","                 { printf("COMMA ,\n"); return yytext[0]; }
-"["                 { printf("LBRACK %s\n", yytext); return yytext[0]; }
-"]"                 { printf("RBRACK %s\n", yytext); return yytext[0]; }
+"main"              { return MAIN; }
+"const"             { return CONST; }
+"int"               { return INT; }
+"void"              { return VOID; }
+"break"             { return BREAK; }
+"continue"          { return CONTINUE; }
+"if"                { return IF; }
+"else"              { return ELSE; }
+"while"             { return WHILE; }
+"getint"            { return GETINT; }
+"printf"            { return PRINTF; }
+"return"            { return RETURN; }
 
-"="                 { printf("ASSIGN =\n"); return yytext[0]; }
+"{"                 { return yytext[0]; }
+"}"                 { return yytext[0]; }
+"("                 { return yytext[0]; }
+")"                 { return yytext[0]; }
+";"                 { return yytext[0]; }
+","                 { return yytext[0]; }
+"["                 { return yytext[0]; }
+"]"                 { return yytext[0]; }
 
-{INTCON}            { printf("INTCON %s\n", yytext); return INT_CONST; }
-{IDENFR}            { printf("IDENFR %s\n", yytext); return IDENT; }
-{STRCON}            { printf("STRCON %s\n", yytext); return STR_CONST; }
+"+"                 { return PLUS; }
+"-"                 { return MINUS; }
+"*"                 { return TIMES; }
+"/"                 { return DIVIDE; }
+"%"                 { return '%'; }
+"="                 { return yytext[0]; }
+
+"<"                 { return LSS; }
+"<="                { return LEQ; }
+">"                 { return GRE; }
+">="                { return GEQ; }
+"=="                { return EQL; }
+"!="                { return NEQ; }
+"!"                 { return '!'; }
+"&&"                { return AND; }
+"||"                { return OR; }
+
+{INTCON}            { return INT_CONST; }
+{IDENFR}            { return IDENT; }
+{STRCON}            { return STR_CONST; }
 
 [ \t\r\n]+          ;   // 忽略空白符
-.                   { printf("TOKEN: UNKNOWN (%s)\n", yytext); return yytext[0]; }
+.                   { return yytext[0]; }
 
 %%
