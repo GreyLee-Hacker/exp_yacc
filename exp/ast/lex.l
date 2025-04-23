@@ -26,10 +26,31 @@ STRCON     \"([^\"\\]|\\.)*\"
 "main"              { return MAIN; }
 "const"             { return CONST; }
 "int"               { return INT; } 
+"break"             { return BREAK; }
+"continue"          { return CONTINUE; }
+"if"                { return IF; }
+"else"              { return ELSE; }
+"while"             { return WHILE; }
 "getint"            { return GETINT; }
 "printf"            { return PRINTF; }
 "return"            { return RETURN; }
 "void"              { return VOID; }
+
+"+"                 { return PLUS; }
+"-"                 { return MINUS; }
+"*"                 { return TIMES; }
+"/"                 { return DIVIDE; }
+"%"                 { return yytext[0]; }
+
+"<"                 { return LSS; }
+"<="                { return LEQ; }
+">"                 { return GRE; }
+">="                { return GEQ; }
+"=="                { return EQL; }
+"!="                { return NEQ; }
+"&&"                { return AND; }
+"||"                { return OR; }
+"!"                 { return yytext[0]; }
 
 "{"                 { return yytext[0]; }
 "}"                 { return yytext[0]; }
